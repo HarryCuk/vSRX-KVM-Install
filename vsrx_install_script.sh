@@ -1,10 +1,13 @@
 #!/bin/bash
+start=`date +%s`
 
-echo -n "Please enter Linux username: "
+
+echo -n "Please enter your Linux username: "
 read username
-echo $username
-sleep 5
+sleep 2
 
+echo "Checking if device meets KVM installation requirements..."
+sleep 2.5
 if kvm-ok | grep -q 'KVM acceleration can be used'; then
     echo "KVM can be used - continuing"
     sleep 5
@@ -14,9 +17,12 @@ else
     exit
 fi    
 
-
+echo "Fetching latest packages..."
+sleep 1
 # Update latest packages and install latest versions of packages
 apt-get update # Retrieve latest package lists
+echo "Checking installed packages for updates (Optional)"
+sleep 1
 apt-get upgrade # Update pre-installed packages
 
 # Install KVM and other required packages
@@ -24,7 +30,7 @@ apt-get upgrade # Update pre-installed packages
 
 # Prompt if GUI Virt Manager is required
 while true; do
-    read -p "Do you wish to install GUI Virt Manager [Y/N?]" yn
+    read -p "Do you wish to install the GUI Virt Manager [Y/N?]" yn
     case $yn in
     [Yy]* ) apt-get install virt-manager; break;;
     [Nn]* ) break;;
@@ -32,4 +38,24 @@ while true; do
     esac
 done
 
-echo "Script End"
+echo "KVM Installed"
+sleep 2
+
+echo "Adding user to groups"
+usermod -a -G kvm $username
+usermod -a -G libvirt $username
+
+if groups $username | grep -q 'kvm libvirt'; then
+    echo "Required groups added sucessfully"
+    sleep 5
+else
+    echo "Failed to add required groups to username:" $username 
+    echo "Please ensure you have entered the NON-ROOT username correctly."
+    sleep 5
+    exit
+fi    
+
+end=`date +%s`
+runtime=$((end-start))
+echo "End of script"
+echo "Runtime:" $runtime "Seconds" 
