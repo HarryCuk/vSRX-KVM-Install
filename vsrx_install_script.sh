@@ -38,7 +38,7 @@ while true; do
     esac
 done
 
-echo "KVM Installed"
+# echo "KVM Installed"
 sleep 2
 
 echo "Adding user to groups"
@@ -46,7 +46,7 @@ usermod -a -G kvm $username
 usermod -a -G libvirt $username
 
 if groups $username | grep -q 'kvm libvirt'; then
-    echo "Required groups added sucessfully"
+    echo "Required groups added successfully"
     sleep 5
 else
     echo "Failed to add required groups to username:" $username 
@@ -55,7 +55,18 @@ else
     exit
 fi    
 
+echo "Verifying KVM Install..."
+if virsh list --all | grep -q 'Id'; then
+    echo "KVM successfully installed!"
+    sleep 5
+else
+    echo "KVM Installation failed, please check logs and try again."
+    sleep 5
+    exit
+fi    
+
+
 end=`date +%s`
 runtime=$((end-start))
 echo "End of script"
-echo "Runtime:" $runtime "Seconds" 
+echo "Runtime:" $runtime "Seconds"
