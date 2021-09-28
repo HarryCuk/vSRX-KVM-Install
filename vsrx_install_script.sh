@@ -6,6 +6,18 @@ echo -n "Please enter your Linux username: "
 read username
 sleep 2
 
+echo "Fetching latest packages..."
+sleep 1
+# Update latest packages and install latest versions of packages
+apt-get update # Retrieve latest package lists
+echo "Checking installed packages for updates (Optional)"
+sleep 1
+apt-get upgrade # Update pre-installed packages
+sleep 1
+echo "Installing CPU-Checker package..."
+apt install cpu-checker -y
+sleep 1
+
 echo "Checking if device meets KVM installation requirements..."
 sleep 2.5
 if kvm-ok | grep -q 'KVM acceleration can be used'; then
@@ -17,22 +29,15 @@ else
     exit
 fi    
 
-echo "Fetching latest packages..."
-sleep 1
-# Update latest packages and install latest versions of packages
-apt-get update # Retrieve latest package lists
-echo "Checking installed packages for updates (Optional)"
-sleep 1
-apt-get upgrade # Update pre-installed packages
-
+echo "Installing KVM and required packages..."
 # Install KVM and other required packages
-#apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
 # Prompt if GUI Virt Manager is required
 while true; do
     read -p "Do you wish to install the GUI Virt Manager [Y/N?]" yn
     case $yn in
-    [Yy]* ) apt-get install virt-manager; break;;
+    [Yy]* ) apt-get install virt-manager -y; break;;
     [Nn]* ) break;;
     * ) echo "Please answer yes or no.";;
     esac
