@@ -1,0 +1,7 @@
+<!--Configuration for the 'default' network configuration used for management-->
+<network>
+ <name>default</name>
+ <forward mode='passthrough'>
+   <interface dev="eno4"/>
+ </forward>
+</network>
