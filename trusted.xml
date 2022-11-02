@@ -1,6 +1,10 @@
 <network>
  <name>trusted</name>
- <forward mode='passthrough'>
-   <interface dev="eno2"/>
- </forward>
+ <forward mode='route'/>
+ <bridge name='virbr1' stp='on' delay='0' />
+ <ip address='192.168.1.1' netmask='255.255.255.0'>
+ <dhcp>
+ <range start='192.168.1.11' end='192.168.1.50' />
+ </dhcp>
+ </ip>
 </network>
