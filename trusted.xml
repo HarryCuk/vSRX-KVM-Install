@@ -1,0 +1,6 @@
+<network>
+ <name>trusted</name>
+ <forward mode='passthrough'>
+   <interface dev="eno2"/>
+ </forward>
+</network>

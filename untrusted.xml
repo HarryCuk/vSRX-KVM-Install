@@ -1,0 +1,6 @@
+<network>
+ <name>untrusted</name>
+ <forward mode='passthrough'>
+   <interface dev="eno3"/>
+ </forward>
+</network>
