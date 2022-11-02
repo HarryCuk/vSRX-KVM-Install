@@ -46,23 +46,23 @@ done
 # echo "KVM Installed"
 sleep 2
 
-echo "Adding user to groups"
+echo "Adding user to groups..."
 usermod -a -G kvm $username
 usermod -a -G libvirt $username
 
-if groups $username | grep -q 'kvm libvirt'; then
-    echo "Required groups added successfully"
+if groups $username | grep -q 'kvm' && groups $username | grep -q 'libvirt'; then
+    echo "Required groups added successfully."
     sleep 5
 else
-    echo "Failed to add required groups to username:" $username 
+    echo "Failed to add required groups to username:" $username
     echo "Please ensure you have entered the NON-ROOT username correctly."
     sleep 5
     exit
-fi    
+fi
 
 echo "Verifying KVM Install..."
 if virsh list --all | grep -q 'Id'; then
-    echo "KVM successfully installed!"
+    echo "KVM successfully installed."
     sleep 5
 else
     echo "KVM Installation failed, please check logs and try again."
